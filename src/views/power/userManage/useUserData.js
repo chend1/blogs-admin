@@ -12,8 +12,9 @@ export default function useUserData() {
   const getUserList = async (params, callback) => {
     searchInfo = params;
     const res = await userList(params);
+    console.log(res);
     userData.value = res.list;
-    total.value = res.count;
+    total.value = res.total;
     callback && callback();
   };
   // 新增账号

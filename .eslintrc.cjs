@@ -34,6 +34,8 @@ module.exports = {
     'no-use-before-define': 'off',
     'no-restricted-syntax': 'off',
     'no-unused-expressions': 'off',
+    'no-param-reassign': 'off',
+    'import/no-cycle': 'off',
   },
   settings: {
     'import/resolver': {

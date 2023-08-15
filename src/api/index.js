@@ -6,7 +6,7 @@ export {
 } from './user/index';
 // 角色
 export {
-  roleList, editRole, addRole, deleteRole,
+  roleList, editRole, addRole, deleteRole, authRole,
 } from './role/index';
 // 菜单
 export {

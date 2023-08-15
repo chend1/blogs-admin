@@ -10,3 +10,6 @@ export const addRole = (data) => request.post('/role/add', data);
 
 // 删除角色
 export const deleteRole = (data) => request.post('/role/delete', data);
+
+// 角色授权
+export const authRole = (data) => request.post('/role/auth', data);

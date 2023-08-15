@@ -23,7 +23,6 @@ const router = createRouter({
 export const resetRouter = () => {
   const asyncRoutesName = asyncRoutes.map((item) => item.name);
   asyncRoutesName.forEach((name) => {
-    console.log(name, router.hasRoute(name));
     if (router.hasRoute(name)) {
       router.removeRoute(name);
     }

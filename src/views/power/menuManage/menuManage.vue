@@ -34,8 +34,8 @@ const handleEditMenu = (row) => {
 };
 
 // 删除菜单
-const handleDeleteMenu = () => {
-  deleteMenuClick({ id: menuInfo.value.id });
+const handleDeleteMenu = (row) => {
+  deleteMenuClick({ id: row.id });
 };
 // 弹窗确认事件
 const formRef = ref();
@@ -58,7 +58,7 @@ const handleClose = () => {
 };
 
 const rules = {
-  title: [
+  menu_name: [
     {
       required: true,
       message: '请输入菜单名称',
@@ -96,7 +96,7 @@ const rules = {
         :tree-props="{ children: 'children' }"
       >
         <el-table-column
-          prop="title"
+          prop="menu_name"
           label="菜单名称"
         />
         <el-table-column
@@ -175,19 +175,23 @@ const rules = {
             filterable
           >
             <el-option
+              label="暂无"
+              :value="0"
+            />
+            <el-option
               v-for="item in menuOptions"
               :key="item.id"
-              :label="item.title"
+              :label="item.menu_name"
               :value="item.id"
             />
           </el-select>
         </el-form-item>
         <el-form-item
           label="菜单名称"
-          prop="title"
+          prop="menu_name"
         >
           <el-input
-            v-model="menuInfo.title"
+            v-model="menuInfo.menu_name"
             placeholder="请输入内容"
           />
         </el-form-item>

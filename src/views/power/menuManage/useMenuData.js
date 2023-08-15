@@ -15,7 +15,6 @@ export default function useMenuData() {
     const res = await menuList(params);
     // 一维菜单列表
     menuOptions.value = flatArray(res.list);
-    menuOptions.value.unshift({ id: 0, title: '暂无' });
     menuData.value = res.list;
     callback && callback();
   };

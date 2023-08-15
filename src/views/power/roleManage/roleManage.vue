@@ -10,6 +10,7 @@ const {
   addRoleClick,
   editRoleClick,
   deleteRoleClick,
+  authRoleClick,
 } = useRoleData();
 // 搜索信息
 const searchInfo = reactive({
@@ -37,8 +38,8 @@ const handleEditRole = (row) => {
 };
 
 // 删除角色
-const handleDeleteRole = () => {
-  deleteRoleClick({ id: roleInfo.value.id });
+const handleDeleteRole = (row) => {
+  deleteRoleClick({ id: row.id });
 };
 // 弹窗确认事件
 const confirmClick = () => {
@@ -65,13 +66,13 @@ const { menuData, menuOptions, getMenuList } = useMenuData();
 getMenuList();
 const defaultProps = ref({
   children: 'children',
-  label: 'title',
+  label: 'menu_name',
 });
 // 授权角色
 const handleAuthRole = (row) => {
   console.log(row);
   roleInfo.value = row;
-  ruleInfo.value = row.menuList;
+  ruleInfo.value = row.auth_list.split(',');
   ruleDialogVisible.value = true;
   setTimeout(() => {
     const menuTree = menuAuthTree.value.getCheckedNodes();
@@ -81,9 +82,9 @@ const handleAuthRole = (row) => {
 // 确认点击
 const ruleConfirmClick = () => {
   const rules = selectAuthList.value.map((item) => item.id);
-  editRoleClick({
+  authRoleClick({
     id: roleInfo.value.id,
-    menuList: rules,
+    auth_list: rules.toString(),
   });
   ruleDialogVisible.value = false;
 };
@@ -158,7 +159,7 @@ function nodeClick(node, all) {
         height="100%"
       >
         <el-table-column
-          prop="name"
+          prop="role_name"
           label="角色名"
           min-width="80"
           align="center"
@@ -216,7 +217,7 @@ function nodeClick(node, all) {
     >
       <el-pagination
         v-model:current-page="searchInfo.page"
-        v-model:page-size="searchInfo.length"
+        v-model:page-size="searchInfo.size"
         background
         layout="total, sizes, prev, pager, next"
         :page-sizes="[5, 10, 15, 20]"
@@ -239,7 +240,10 @@ function nodeClick(node, all) {
         label-width="120px"
       >
         <el-form-item label="角色名">
-          <el-input v-model="roleInfo.name" />
+          <el-input v-model="roleInfo.role_name" />
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="roleInfo.role_desc" />
         </el-form-item>
         <el-form-item label="是否启用">
           <el-radio-group v-model="roleInfo.status">

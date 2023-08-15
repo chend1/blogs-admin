@@ -2,8 +2,9 @@ import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 
-export default defineConfig((mode) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname);
+  console.log(env);
   return {
     plugins: [vue()],
     resolve: {

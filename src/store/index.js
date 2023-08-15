@@ -18,8 +18,8 @@ export const useMainStore = defineStore('main', {
       this.token = token;
     },
     async setUserInfo() {
-      const res = await getUserInfo({ token: this.token });
-      this.userInfo = res.userInfo;
+      const res = await getUserInfo();
+      this.userInfo = res.info;
       const { accessibleRoutes, menuList } = await generateRoutes(asyncRoutes, res.menu);
       this.menuList = menuList;
       accessibleRoutes.forEach((route) => {

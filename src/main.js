@@ -14,11 +14,11 @@ import router from './router';
 import './router/guard';
 import App from './App.vue';
 // mock拦截请求
-import { mockXHR } from '../mock/index';
+// import { mockXHR } from '../mock/index';
 
-if (import.meta.env.MODE === 'development') {
-  mockXHR();
-}
+// if (import.meta.env.MODE === 'development') {
+//   mockXHR();
+// }
 // 状态管理
 const pinia = createPinia();
 const app = createApp(App);

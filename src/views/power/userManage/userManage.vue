@@ -41,8 +41,8 @@ const handleEditUser = (row) => {
 };
 
 // 删除用户
-const handleDeleteUser = () => {
-  deleteUserClick({ id: userInfo.value.id });
+const handleDeleteUser = (row) => {
+  deleteUserClick({ id: row.id });
 };
 // 弹窗确认事件
 const formRef = ref();
@@ -79,7 +79,7 @@ const rules = {
       trigger: 'blur',
     },
   ],
-  role: [
+  role_id: [
     {
       required: true,
       message: '请选择角色',
@@ -119,12 +119,17 @@ const rules = {
           align="center"
         />
         <el-table-column
+          prop="phone"
+          label="手机号"
+          align="center"
+        />
+        <el-table-column
           prop="role"
           label="角色"
           align="center"
         >
           <template #default="scope">
-            {{ getRoleName(scope.row.role) }}
+            {{ getRoleName(scope.row.role_id) }}
           </template>
         </el-table-column>
         <el-table-column
@@ -172,7 +177,7 @@ const rules = {
     >
       <el-pagination
         v-model:current-page="searchInfo.page"
-        v-model:page-size="searchInfo.length"
+        v-model:page-size="searchInfo.size"
         background
         layout="total, sizes, prev, pager, next"
         :page-sizes="[5, 10, 15, 20]"
@@ -206,9 +211,21 @@ const rules = {
           label="账号"
           prop="account"
         >
-          <el-input v-model="userInfo.account" />
+          <el-input
+            v-model="userInfo.account"
+            :disabled="!isAdd"
+          />
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item
+          label="手机号"
+          prop="phone"
+        >
+          <el-input v-model="userInfo.phone" />
+        </el-form-item>
+        <el-form-item
+          v-if="isAdd"
+          label="密码"
+        >
           <el-input
             v-model="userInfo.password"
             type="password"
@@ -217,13 +234,13 @@ const rules = {
         </el-form-item>
         <el-form-item
           label="角色"
-          prop="role"
+          prop="role_id"
         >
-          <el-select v-model="userInfo.role">
+          <el-select v-model="userInfo.role_id">
             <el-option
               v-for="item in roleData"
               :key="item.id"
-              :label="item.name"
+              :label="item.role_name"
               :value="item.id"
             ></el-option>
           </el-select>

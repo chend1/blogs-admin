@@ -23,7 +23,7 @@ defineProps({
       ></component>
     </el-icon>
     <template #title>
-      <span>{{ menuInfo.title }}</span>
+      <span>{{ menuInfo.title || menuInfo.menu_name }}</span>
     </template>
   </el-menu-item>
   <el-sub-menu
@@ -38,7 +38,7 @@ defineProps({
           class="myIcon"
         ></component>
       </el-icon>
-      <span>{{ menuInfo.title }}</span>
+      <span>{{ menuInfo.title || menuInfo.menu_name }}</span>
     </template>
     <el-menu-item-group>
       <template
