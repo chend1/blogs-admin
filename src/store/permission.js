@@ -39,7 +39,9 @@ function getAccessibleRoutes(localRoutes, powerRouteList) {
         routeList.push(item);
         pathList.push(...showPathList, item.path);
       } else {
-        item.meta.title = powerRoute[0].title;
+        item.meta.title = powerRoute[0].menu_name
+          ? powerRoute[0].menu_name
+          : item.meta.title;
         routeList.push(item);
         pathList.push(item.path);
       }
@@ -81,7 +83,7 @@ function sortMenu(menuList) {
   let sort = 0;
   menuList.forEach((item) => {
     const menu = { ...item };
-    sort = item.sort;
+    sort = item.sort || 30;
     if (list[sort]) {
       list[sort].push(menu);
     } else {
@@ -107,9 +109,13 @@ export function generateRoutes(localRoutes, powerRoutes) {
   // 一维权限路由列表
   const powerRouteList = getPowerRouteList(powerRoutes);
   // 本地可使用路由和可显示路径列表
-  const { accessibleRoutes, showPathList } = getAccessibleRoutes(localRoutes, powerRouteList);
+  const { accessibleRoutes, showPathList } = getAccessibleRoutes(
+    localRoutes,
+    powerRouteList,
+  );
   // 菜单显示列表
   const menuList = getMenuList(powerRoutes, showPathList);
+  console.log('menuList', menuList);
   // 菜单排序
   const sortMenuList = sortMenu(menuList);
   return new Promise((reject) => {

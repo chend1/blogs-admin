@@ -21,6 +21,7 @@ export const useMainStore = defineStore('main', {
       const res = await getUserInfo();
       this.userInfo = res.info;
       const { accessibleRoutes, menuList } = await generateRoutes(asyncRoutes, res.menu);
+      console.log('accessibleRoutes, menuList', accessibleRoutes, menuList);
       this.menuList = menuList;
       accessibleRoutes.forEach((route) => {
         router.addRoute(route);

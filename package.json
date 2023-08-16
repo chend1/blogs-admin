@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.4.0",
     "element-plus": "^2.3.6",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.34",
     "vue": "^3.2.47",
+    "vue-cropper": "^1.0.9",
     "vue-router": "4"
   },
   "devDependencies": {

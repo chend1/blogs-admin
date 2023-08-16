@@ -31,4 +31,42 @@ export const asyncRoutes = [
       },
     ],
   },
+  {
+    path: '/article',
+    redirect: '/articleManage',
+    meta: { title: '文章管理', isLayout: true },
+    name: 'Article',
+    children: [
+      {
+        path: '/articleManage',
+        component: () => import('@/views/articleManage/articleList/articleList.vue'),
+        meta: { title: '文章管理', isLayout: true },
+        name: 'userManage',
+      },
+      {
+        path: '/commentManage',
+        component: () => import('@/views/articleManage/commentManage/commentManage.vue'),
+        meta: { title: '评论管理', isLayout: true },
+        name: 'commentManage',
+      },
+      {
+        path: '/classificationManage',
+        component: () => import('@/views/articleManage/classManage/classManage.vue'),
+        meta: { title: '分类管理', isLayout: true },
+        name: 'classifyManage',
+      },
+      {
+        path: '/tagsManage',
+        component: () => import('@/views/articleManage/tagsManage/tagsManage.vue'),
+        meta: { title: '标签管理', isLayout: true },
+        name: 'tagsManage',
+      },
+      {
+        path: '/writeArticle',
+        component: () => import('@/views/articleManage/writeArticle/writeArticle.vue'),
+        meta: { title: '文章编辑', isLayout: true },
+        name: 'writeArticle',
+      },
+    ],
+  },
 ];

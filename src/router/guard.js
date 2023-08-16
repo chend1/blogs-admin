@@ -3,6 +3,7 @@ import router from './index';
 // 未授权时可访问的白名单
 const whiteList = ['/login'];
 router.beforeEach(async (to, from, next) => {
+  console.log(to);
   const baseStore = useMainStore();
   const { token, menuList } = baseStore;
   if (token) {

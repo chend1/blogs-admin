@@ -12,3 +12,12 @@ export {
 export {
   menuList, editMenu, addMenu, deleteMenu,
 } from './menu/index';
+// 文章
+export {
+  articleList, editArticle, addArticle, deleteArticle, articleInfo,
+} from './article/index';
+
+// 文章分类
+export {
+  classificationList, addClassification, editClassification, deleteClassification,
+} from './classification/index';

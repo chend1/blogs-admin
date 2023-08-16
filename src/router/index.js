@@ -12,6 +12,12 @@ const routes = [
     component: () => import('@/views/login/login.vue'),
     meta: { title: '登录', isHiddenLayout: true },
   },
+  {
+    path: '/404',
+    component: () => import('@/views/error/404.vue'),
+    name: '404',
+    meta: { title: '404', isLayout: true },
+  },
 ];
 
 const router = createRouter({

@@ -23,12 +23,6 @@ module.exports = {
     'linebreak-style': ['off', 'windows'],
     'no-console': 'off',
     'no-debugger': 'off',
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: true,
-      },
-    ],
     'import/prefer-default-export': 'off',
     'vue/html-self-closing': 'off',
     'no-use-before-define': 'off',
@@ -36,6 +30,8 @@ module.exports = {
     'no-unused-expressions': 'off',
     'no-param-reassign': 'off',
     'import/no-cycle': 'off',
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     'import/resolver': {
