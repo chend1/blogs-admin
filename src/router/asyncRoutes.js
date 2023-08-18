@@ -33,15 +33,15 @@ export const asyncRoutes = [
   },
   {
     path: '/article',
-    redirect: '/articleManage',
+    redirect: '/articleList',
     meta: { title: '文章管理', isLayout: true },
     name: 'Article',
     children: [
       {
-        path: '/articleManage',
+        path: '/articleList',
         component: () => import('@/views/articleManage/articleList/articleList.vue'),
         meta: { title: '文章管理', isLayout: true },
-        name: 'userManage',
+        name: 'articleList',
       },
       {
         path: '/commentManage',
@@ -66,6 +66,12 @@ export const asyncRoutes = [
         component: () => import('@/views/articleManage/writeArticle/writeArticle.vue'),
         meta: { title: '文章编辑', isLayout: true },
         name: 'writeArticle',
+      },
+      {
+        path: '/articleInfo',
+        component: () => import('@/views/articleManage/articleInfo/articleInfo.vue'),
+        meta: { title: '文章详情', isLayout: true },
+        name: 'articleInfo',
       },
     ],
   },

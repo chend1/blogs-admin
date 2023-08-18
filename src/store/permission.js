@@ -115,7 +115,7 @@ export function generateRoutes(localRoutes, powerRoutes) {
   );
   // 菜单显示列表
   const menuList = getMenuList(powerRoutes, showPathList);
-  console.log('menuList', menuList);
+  // console.log('menuList', menuList);
   // 菜单排序
   const sortMenuList = sortMenu(menuList);
   return new Promise((reject) => {

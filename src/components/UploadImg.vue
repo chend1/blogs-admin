@@ -1,27 +1,55 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Plus } from '@element-plus/icons-vue';
 import 'vue-cropper/dist/index.css';
 import { VueCropper } from 'vue-cropper';
+import { uploadFile } from '@/api';
 
+const props = defineProps({
+  imgUrl: {
+    type: String,
+    default: '',
+  },
+});
 const option = ref({});
 const isCropper = ref(false);
 const fileChange = (e) => {
   const file = e.target.files[0];
   option.value.img = URL.createObjectURL(file);
+  option.value.outputType = file.type.split('/')[1];
   isCropper.value = true;
-  console.log(e.target.files[0]);
+};
+const imgSrc = ref('');
+
+const cropperRef = ref();
+const emit = defineEmits(['saveImg']);
+const screenShotClick = () => {
+  cropperRef.value.getCropBlob(async (data) => {
+    imgSrc.value = URL.createObjectURL(data);
+    const formData = new FormData();
+    formData.append('file', data);
+    const res = await uploadFile(formData);
+    isCropper.value = false;
+    emit('saveImg', res.url);
+  });
+};
+watch(() => props.imgUrl, () => {
+  imgSrc.value = props.imgUrl;
+}, { immediate: true });
+const handleClose = () => {
+  isCropper.value = false;
+  option.value = {};
 };
 </script>
 
 <template>
   <div class="upload-img">
     <div
-      v-if="option.img"
+      v-if="imgSrc"
       class="img"
     >
       <img
-        src=""
+        :src="imgSrc"
         alt=""
       />
     </div>
@@ -45,18 +73,19 @@ const fileChange = (e) => {
   >
     <div class="cropper">
       <VueCropper
-        ref="cropper"
+        ref="cropperRef"
         :img="option.img"
-        :output-size="option.size"
         :output-type="option.outputType"
+        center-box
         auto-crop
+        fixed
       ></VueCropper>
       <div class="operatioin">
         <el-button
           type="primary"
-          @click="handleSave"
+          @click="screenShotClick"
         >
-          保存
+          截图
         </el-button>
         <el-button @click="handleClose">
           取消
@@ -78,6 +107,7 @@ const fileChange = (e) => {
     height: 150px;
     border: 1px solid #d8d8d8;
     border-radius: 5px;
+    margin-right: 10px;
     img {
       width: 100%;
       border-radius: 50%;

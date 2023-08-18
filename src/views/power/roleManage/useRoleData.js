@@ -12,7 +12,7 @@ export default function useRoleData() {
   const getRoleList = async (params, callback) => {
     searchInfo = params;
     const res = await roleList(params);
-    console.log(res);
+    // console.log(res);
     roleData.value = res.list;
     total.value = res.total;
     callback && callback();

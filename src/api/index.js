@@ -14,10 +14,23 @@ export {
 } from './menu/index';
 // 文章
 export {
-  articleList, editArticle, addArticle, deleteArticle, articleInfo,
+  articleList, editArticle, addArticle, deleteArticle, articleInfo, issueArticle,
 } from './article/index';
+
+// 评论
+export {
+  commentList, editComment, addComment, deleteComment,
+} from './comment/index';
+
+// 标签
+export {
+  tagsList, editTags, addTags, deleteTags,
+} from './tags/index';
 
 // 文章分类
 export {
   classificationList, addClassification, editClassification, deleteClassification,
 } from './classification/index';
+
+// 文件上传
+export { uploadFile } from './upload/index';

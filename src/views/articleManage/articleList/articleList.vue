@@ -1,16 +1,17 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import useArticleData from './useArticleData';
+import useClassificationData from '../classManage/useClassificationData';
 
+const { getClassificationName, getClassificationList } = useClassificationData();
+getClassificationList();
 const {
   articleData,
   total,
   getArticleList,
-  // addArticleClick,
-  // editArticleClick,
   deleteArticleClick,
-  // getArticleInfo,
+  issueArticleClick,
 } = useArticleData();
 // 搜索信息
 const searchInfo = reactive({
@@ -19,10 +20,6 @@ const searchInfo = reactive({
   keyword: '',
 });
 getArticleList(searchInfo);
-// 文章信息
-const articleInfo = ref({
-  status: 1,
-});
 // 添加文章
 const router = useRouter();
 const handleAddArticle = () => {
@@ -36,7 +33,21 @@ const handleAddArticle = () => {
 
 // 修改文章
 const handleEditArticle = (row) => {
-  articleInfo.value = { ...row };
+  router.push({
+    path: '/writeArticle',
+    query: {
+      isAdd: false,
+      id: row.id,
+    },
+  });
+};
+const handleLookArticle = (row) => {
+  router.push({
+    path: '/articleInfo',
+    query: {
+      id: row.id,
+    },
+  });
 };
 
 // 删除文章
@@ -73,7 +84,11 @@ const handleDeleteArticle = (row) => {
           prop="class_id"
           label="所属分类"
           align="center"
-        />
+        >
+          <template #default="scope">
+            {{ getClassificationName(scope.row.class_id) }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="view"
           label="浏览量"
@@ -92,14 +107,33 @@ const handleDeleteArticle = (row) => {
           prop="create_time"
           label="创建时间"
           align="center"
+          width="170"
         />
         <el-table-column
           prop=""
           label="操作"
-          min-width="140"
+          :min-width="140"
           align="center"
+          fixed="right"
         >
           <template #default="scope">
+            <el-button
+              v-if="scope.row.type === 2"
+              type="success"
+              size="small"
+              @click="issueArticleClick({ id: scope.row.id, type: 1 })"
+            >
+              发布
+            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              plain
+              @click="handleLookArticle(scope.row)"
+            >
+              查看
+            </el-button>
+
             <el-button
               type="primary"
               size="small"

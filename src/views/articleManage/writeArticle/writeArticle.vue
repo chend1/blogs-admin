@@ -17,9 +17,14 @@ const articleInfo = ref({});
 const isAdd = ref(false);
 onMounted(async () => {
   console.log(route.query);
-  isAdd.value = route.query.isAdd;
+  isAdd.value = route.query.isAdd === 'true';
   if (route.query.id) {
     const res = await getArticleInfo({ id: route.query.id });
+    articleInfo.value = {
+      ...res,
+      keyword: res.keyword ? res.keyword.split(',') : [],
+      tags: res.tags ? res.tags.split(',') : [],
+    };
     console.log(res);
   }
 });
@@ -37,15 +42,26 @@ const rules = {
 
 const editorRef = ref();
 const formRef = ref();
-const handleSave = () => {
+// 保存图片
+const saveImgClick = (src) => {
+  articleInfo.value.thumbnail = src;
+};
+// 保存文章
+const handleSave = (type) => {
   const res = editorRef.value.handleSave();
   articleInfo.value.content = res.text ? res.html : '';
   formRef.value.validate((valid) => {
     if (valid) {
+      const params = { ...articleInfo.value };
+      params.keyword = params.keyword.length ? params.keyword.join(',') : '';
+      params.tags = params.tags.length ? params.tags.join(',') : '';
+      params.type = type;
+      // console.log(params);
       if (isAdd.value) {
-        addArticleClick(articleInfo.value);
+        addArticleClick(params, closeClick);
       } else {
-        editArticleClick(articleInfo.value);
+        params.type = articleInfo.value.type;
+        editArticleClick(params, closeClick);
       }
     }
   });
@@ -126,21 +142,25 @@ const handleSave = () => {
             style="width: 90%"
           >
           </el-select>
-          <!-- <el-input v-model="articleInfo.tags" /> -->
         </el-form-item>
         <el-form-item
           label="缩略图"
           prop="thumbnail"
         >
-          <UploadImg />
-          <!-- <el-input v-model="articleInfo.thumbnail" /> -->
+          <UploadImg
+            :img-url="articleInfo.thumbnail"
+            @save-img="saveImgClick"
+          />
         </el-form-item>
         <el-form-item
           label="内容"
           prop="content"
         >
           <div class="content">
-            <RithText ref="editorRef" />
+            <RithText
+              ref="editorRef"
+              :content="articleInfo.content"
+            />
           </div>
         </el-form-item>
       </el-form>
@@ -150,10 +170,25 @@ const handleSave = () => {
         取消
       </el-button>
       <el-button
+        v-if="isAdd"
+        type="primary"
+        @click="handleSave(2)"
+      >
+        保存草稿
+      </el-button>
+      <el-button
+        v-if="isAdd"
+        type="primary"
+        @click="handleSave(1)"
+      >
+        文章发布
+      </el-button>
+      <el-button
+        v-if="!isAdd"
         type="primary"
         @click="handleSave"
       >
-        保存
+        确认修改
       </el-button>
     </div>
   </div>
@@ -203,7 +238,6 @@ const handleSave = () => {
     .content {
       border: 1px solid #dcdfe6;
     }
-
   }
   .operation {
     width: 100%;

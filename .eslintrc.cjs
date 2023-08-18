@@ -32,6 +32,9 @@ module.exports = {
     'import/no-cycle': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'prefer-destructuring': 'off',
+    'vue/no-setup-props-destructure': 'off',
+    'vue/no-v-html': 'off',
   },
   settings: {
     'import/resolver': {

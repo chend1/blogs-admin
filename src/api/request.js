@@ -22,7 +22,7 @@ request.interceptors.request.use((config) => {
 });
 // 请求成功拦截
 const successCallback = (response) => {
-  console.log(response);
+  // console.log(response);
   const {
     message, code, data, status,
   } = response.data;
@@ -32,6 +32,7 @@ const successCallback = (response) => {
   if (code === 401) {
     const store = useMainStore();
     store.logOut();
+    return Promise.reject(response);
   }
 
   ElMessage.error(`错误码${code}，${message}`);

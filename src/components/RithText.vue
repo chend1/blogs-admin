@@ -1,9 +1,17 @@
 <script setup>
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import {
-  onBeforeUnmount, ref, shallowRef,
+  onBeforeUnmount, ref, shallowRef, watch,
 } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { uploadFile } from '@/api';
+
+const props = defineProps({
+  content: {
+    type: String,
+    default: '',
+  },
+});
 
 const editorRef = shallowRef();
 // 内容 HTML
@@ -14,10 +22,21 @@ const editorConfig = {
   MENU_CONF: {
     uploadImage: {
       server: '/api/upload',
-      base64LimitSize: 500 * 1024, // 5kb
+      base64LimitSize: 10 * 1024, // 10kb
+      customUpload(file, insertFn) {
+        const formData = new FormData();
+        formData.append('file', file);
+        uploadFile(formData).then((res) => {
+          console.log(res);
+          insertFn(res.url);
+        });
+      },
     },
   },
 };
+watch(() => props.content, () => {
+  valueHtml.value = props.content;
+}, { immediate: true });
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
@@ -54,14 +73,6 @@ defineExpose({
       mode="default"
       @on-created="handleCreated"
     />
-    <!-- <div class="operation">
-      <div
-        class="btn"
-        @click="handleSave"
-      >
-        保存
-      </div>
-    </div> -->
   </div>
 </template>
 

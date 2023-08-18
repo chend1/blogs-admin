@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {
-  articleList, editArticle, addArticle, deleteArticle, articleInfo,
+  articleList, editArticle, addArticle, deleteArticle, articleInfo, issueArticle,
 } from '@/api';
 
 export default function useArticleData() {
@@ -18,7 +18,7 @@ export default function useArticleData() {
     callback && callback();
   };
   // 新增文章
-  const addArticleClick = async (params) => {
+  const addArticleClick = async (params, callback) => {
     try {
       await addArticle(params);
       getArticleList(searchInfo);
@@ -26,12 +26,13 @@ export default function useArticleData() {
         type: 'success',
         message: '新增成功',
       });
+      callback && callback();
     } catch (err) {
       console.error(err);
     }
   };
   // 修改文章
-  const editArticleClick = async (params) => {
+  const editArticleClick = async (params, callback) => {
     try {
       await editArticle(params);
       getArticleList(searchInfo);
@@ -39,6 +40,7 @@ export default function useArticleData() {
         type: 'success',
         message: '修改成功',
       });
+      callback && callback();
     } catch (err) {
       console.error(err);
     }
@@ -69,6 +71,27 @@ export default function useArticleData() {
     const info = await articleInfo(params);
     return info;
   };
+  // 发布文章
+  const issueArticleClick = async (params) => {
+    ElMessageBox.confirm('确认发布该文章吗？', '警告', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+      .then(async () => {
+        try {
+          await issueArticle(params);
+          getArticleList(searchInfo);
+          ElMessage({
+            type: 'success',
+            message: '发布成功',
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      })
+      .catch(() => {});
+  };
   return {
     articleData,
     total,
@@ -77,5 +100,6 @@ export default function useArticleData() {
     editArticleClick,
     deleteArticleClick,
     getArticleInfo,
+    issueArticleClick,
   };
 }

@@ -1,27 +1,27 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {
-  userList, editUser, addUser, deleteUser,
+  tagsList, editTags, addTags, deleteTags,
 } from '@/api';
 
-export default function useUserData() {
-  const userData = ref([]);
+export default function useTagsData() {
   const total = ref(0);
+  const tagsData = ref([]);
   let searchInfo = {};
-  // 获取账号列表
-  const getUserList = async (params, callback) => {
+  // 获取标签列表
+  const getTagsList = async (params, callback) => {
     searchInfo = params;
-    const res = await userList(params);
+    const res = await tagsList(params);
     // console.log(res);
-    userData.value = res.list;
+    tagsData.value = res.list;
     total.value = res.total;
     callback && callback();
   };
-  // 新增账号
-  const addUserClick = async (params) => {
+  // 新增标签
+  const addTagsClick = async (params) => {
     try {
-      await addUser(params);
-      getUserList(searchInfo);
+      await addTags(params);
+      getTagsList(searchInfo);
       ElMessage({
         type: 'success',
         message: '新增成功',
@@ -30,11 +30,11 @@ export default function useUserData() {
       console.error(err);
     }
   };
-  // 修改账号
-  const editUserClick = async (params) => {
+  // 修改标签
+  const editTagsClick = async (params) => {
     try {
-      await editUser(params);
-      getUserList(searchInfo);
+      await editTags(params);
+      getTagsList(searchInfo);
       ElMessage({
         type: 'success',
         message: '修改成功',
@@ -43,17 +43,17 @@ export default function useUserData() {
       console.error(err);
     }
   };
-  // 删除账号
-  const deleteUserClick = (params) => {
-    ElMessageBox.confirm('确认删除该账号吗？', '警告', {
+  // 删除标签
+  const deleteTagsClick = (params) => {
+    ElMessageBox.confirm('确认删除该标签吗？', '警告', {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
     })
       .then(async () => {
         try {
-          await deleteUser(params);
-          getUserList(searchInfo);
+          await deleteTags(params);
+          getTagsList(searchInfo);
           ElMessage({
             type: 'success',
             message: '删除成功',
@@ -64,12 +64,13 @@ export default function useUserData() {
       })
       .catch(() => {});
   };
+
   return {
-    userData,
     total,
-    getUserList,
-    addUserClick,
-    editUserClick,
-    deleteUserClick,
+    tagsData,
+    getTagsList,
+    addTagsClick,
+    editTagsClick,
+    deleteTagsClick,
   };
 }

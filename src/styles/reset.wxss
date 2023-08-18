@@ -2,9 +2,9 @@ html,
 body {
   box-sizing: border-box;
   overflow: hidden;
-  user-select: none; /*文字不能被选中*/
+  user-select: none;
+  /*文字不能被选中*/
 }
-
 html,
 body,
 ul,
@@ -13,13 +13,11 @@ p {
   margin: 0;
   padding: 0;
 }
-
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
-
 a,
 a:focus,
 a:hover {
@@ -31,58 +29,51 @@ ul,
 li {
   list-style: none;
 }
-
-// 整个滚动条
 ::-webkit-scrollbar {
   width: 6px;
-  &:horizontal {
-    height: 6px;
-  }
 }
-// 滚动条上的按钮
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
 ::-webkit-scrollbar-button {
   display: none;
-  &:horizontal {
-    display: none;
-  }
 }
-// 滚动条上的滚动滑块
+::-webkit-scrollbar-button:horizontal {
+  display: none;
+}
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(220, 220, 220);
+  background-color: #dcdcdc;
   border-radius: 6px;
-  &:hover {
-    background-color: rgba(200, 200, 200);
-  }
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(200, 200, 200);
 }
 .editor-content-view {
   padding: 0 10px;
   margin-top: 20px;
   overflow-x: auto;
 }
-
 .editor-content-view p,
 .editor-content-view li {
-  white-space: pre-wrap; /* 保留空格 */
+  white-space: pre-wrap;
+  /* 保留空格 */
 }
-
 .editor-content-view blockquote {
   border-left: 8px solid #d0e5f2;
   padding: 10px 10px;
   margin: 10px 0;
   background-color: #f1f1f1;
 }
-
 .editor-content-view code {
   font-family: monospace;
   background-color: #eee;
   padding: 3px;
   border-radius: 3px;
 }
-.editor-content-view pre>code {
+.editor-content-view pre > code {
   display: block;
   padding: 10px;
 }
-
 .editor-content-view table {
   border-collapse: collapse;
 }
@@ -95,12 +86,10 @@ li {
 .editor-content-view th {
   background-color: #f1f1f1;
 }
-
 .editor-content-view ul,
 .editor-content-view ol {
   padding-left: 20px;
 }
-
 .editor-content-view input[type="checkbox"] {
   margin-right: 5px;
 }

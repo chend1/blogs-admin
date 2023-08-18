@@ -1,7 +1,10 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {
-  classificationList, addClassification, editClassification, deleteClassification,
+  classificationList,
+  addClassification,
+  editClassification,
+  deleteClassification,
 } from '@/api';
 import { flatArray } from '@/utils';
 
@@ -65,6 +68,12 @@ export default function useClassificationData() {
       })
       .catch(() => {});
   };
+  // 获取分类名称
+  const getClassificationName = (id) => {
+    const list = classificationOptions.value.filter((item) => item.id === id);
+    return (list[0] && list[0].name);
+  };
+
   return {
     classificationData,
     classificationOptions,
@@ -72,5 +81,6 @@ export default function useClassificationData() {
     addClassificationClick,
     editClassificationClick,
     deleteClassificationClick,
+    getClassificationName,
   };
 }

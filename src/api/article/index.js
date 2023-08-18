@@ -11,5 +11,8 @@ export const editArticle = (data) => request.post('/article/edit', data);
 // 删除文章
 export const deleteArticle = (data) => request.post('/article/delete', data);
 
+// 发布文章
+export const issueArticle = (data) => request.post('/article/issue', data);
+
 // 获取文章详情
 export const articleInfo = (params) => request.get('/article/info', { params });
