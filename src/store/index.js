@@ -20,7 +20,10 @@ export const useMainStore = defineStore('main', {
     async setUserInfo() {
       const res = await getUserInfo();
       this.userInfo = res.info;
-      const { accessibleRoutes, menuList } = await generateRoutes(asyncRoutes, res.menu);
+      const { accessibleRoutes, menuList } = await generateRoutes(
+        asyncRoutes,
+        res.menu,
+      );
       // console.log('accessibleRoutes, menuList', accessibleRoutes, menuList);
       this.menuList = menuList;
       accessibleRoutes.forEach((route) => {
@@ -30,15 +33,21 @@ export const useMainStore = defineStore('main', {
       router.addRoute({ path: '/:pathMatch(.*)', redirect: '/404' });
     },
     setLinkList(link) {
-      const list = this.linkList.filter((item) => item.path === link.path);
-      if (list.length <= 0) {
-        this.linkList.push(link);
-      }
+      const list = this.linkList.filter(
+        (item) => item.path !== link.path
+          && (!item.query.id
+          || link.query.id !== item.query.id),
+      );
+      // if (list.length <= 0) {
+      //   this.linkList.push(link);
+      // }
+      list.push(link);
+      this.linkList = list;
     },
-    deleteLink(link) {
-      const idx = this.linkList.findIndex((item) => item.path === link.path);
-      this.linkList.splice(idx + 1, this.linkList.length);
-    },
+    // deleteLink(link) {
+    //   const idx = this.linkList.findIndex((item) => item.path === link.path);
+    //   this.linkList.splice(idx + 1, this.linkList.length);
+    // },
     logOut() {
       removeStorage('token');
       this.token = '';
@@ -48,7 +57,5 @@ export const useMainStore = defineStore('main', {
       router.push('/login');
     },
   },
-  getters: {
-
-  },
+  getters: {},
 });

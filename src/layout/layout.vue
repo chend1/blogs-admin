@@ -15,9 +15,9 @@ const linkList = computed(() => baseStore.linkList);
 const logOutClick = () => {
   baseStore.logOut();
 };
-// 链接跳转
-const linkClick = (link) => {
-  baseStore.deleteLink(link);
+// 关于我们点击
+const aboutClick = () => {
+  console.log(123);
 };
 </script>
 
@@ -70,9 +70,8 @@ const linkClick = (link) => {
               <el-breadcrumb-item
                 v-for="item in linkList"
                 :key="item.path"
-                :to="{ path: item.path }"
+                :to="{ path: item.path, query: item.query }"
                 :class="{active: $route.path === item.path}"
-                @click="linkClick(item)"
               >
                 {{ item.name }}
               </el-breadcrumb-item>
@@ -95,7 +94,7 @@ const linkClick = (link) => {
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="linkClick">
+                <el-dropdown-item @click="aboutClick">
                   关于我们
                 </el-dropdown-item>
                 <el-dropdown-item @click="logOutClick">

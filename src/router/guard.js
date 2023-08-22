@@ -10,9 +10,11 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next('/');
     } else if (menuList && menuList.length) {
+      // console.log(to);
       const linkInfo = {
         path: to.path,
         name: to.meta.title,
+        query: to.query,
       };
       baseStore.setLinkList(linkInfo);
       next();

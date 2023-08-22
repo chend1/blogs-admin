@@ -35,6 +35,7 @@ module.exports = {
     'prefer-destructuring': 'off',
     'vue/no-setup-props-destructure': 'off',
     'vue/no-v-html': 'off',
+    radix: 'off',
   },
   settings: {
     'import/resolver': {
