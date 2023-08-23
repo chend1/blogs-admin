@@ -1,12 +1,15 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Close } from '@element-plus/icons-vue';
 import RithText from '@/components/RithText.vue';
 import UploadImg from '@/components/UploadImg.vue';
+import { useMainStore } from '@/store';
 import useArticleData from '../articleList/useArticleData';
 import useClassificationData from '../classManage/useClassificationData';
 
+const baseStore = useMainStore();
+const userInfo = computed(() => baseStore.userInfo);
 const route = useRoute();
 const router = useRouter();
 const { addArticleClick, editArticleClick, getArticleInfo } = useArticleData();
@@ -18,6 +21,7 @@ const isAdd = ref(false);
 onMounted(async () => {
   console.log(route.query);
   isAdd.value = route.query.isAdd === 'true';
+  articleInfo.value.author = userInfo.value.name;
   if (route.query.id) {
     const res = await getArticleInfo({ id: route.query.id });
     articleInfo.value = {
@@ -56,7 +60,7 @@ const handleSave = (type) => {
       params.keyword = params.keyword.length ? params.keyword.join(',') : '';
       params.tags = params.tags.length ? params.tags.join(',') : '';
       params.type = type;
-      // console.log(params);
+      params.user_id = userInfo.value.id;
       if (isAdd.value) {
         addArticleClick(params, closeClick);
       } else {

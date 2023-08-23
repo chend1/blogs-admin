@@ -75,4 +75,30 @@ export const asyncRoutes = [
       },
     ],
   },
+  {
+    path: '/setting',
+    redirect: '/setting/systemManage',
+    meta: { title: '系统管理', isLayout: true },
+    name: 'setting',
+    children: [
+      {
+        path: '/setting/systemManage',
+        component: () => import('@/views/setting/systemManage/systemManage.vue'),
+        meta: { title: '系统设置', isLayout: true },
+        name: 'systemManage',
+      },
+      {
+        path: '/setting/linkManage',
+        component: () => import('@/views/setting/linkManage/linkManage.vue'),
+        meta: { title: '友情链接管理', isLayout: true },
+        name: 'linkManage',
+      },
+      {
+        path: '/setting/resourceManage',
+        component: () => import('@/views/setting/resourceManage/resourceManage.vue'),
+        meta: { title: '资源管理', isLayout: true },
+        name: 'resourceManage',
+      },
+    ],
+  },
 ];

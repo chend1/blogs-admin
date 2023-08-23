@@ -110,7 +110,7 @@ const handleClose = () => {
     margin-right: 10px;
     img {
       width: 100%;
-      border-radius: 50%;
+      // border-radius: 50%;
     }
   }
   .upload {

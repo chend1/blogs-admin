@@ -1,7 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useMainStore } from '@/store';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 import SendComment from '@/components/SendComment.vue';
 import { CaretRight } from '@element-plus/icons-vue';
 
@@ -10,11 +8,11 @@ defineProps({
     type: Array,
     default: () => [],
   },
+  articleInfo: {
+    type: Object,
+    default: () => ({}),
+  },
 });
-
-const mainStore = useMainStore();
-const userInfo = computed(() => mainStore.userInfo);
-const route = useRoute();
 // 回复信息
 const replyInfo = ref({});
 // 点击回复
@@ -25,22 +23,7 @@ const replyClick = (row) => {
 // 回复评论
 const emit = defineEmits(['replyComment']);
 const replyComment = async (val) => {
-  if (typeof val === 'string') {
-    const params = {
-      content: val,
-      user_id: userInfo.value.id,
-      article_id: parseInt(route.query.id),
-      user_name: userInfo.value.name,
-      user_avatar: userInfo.value.avatar,
-      parent_id: replyInfo.value.parent_id || replyInfo.value.id,
-      reply_user_id: replyInfo.value.user_id,
-      reply_user_name: replyInfo.value.user_name,
-      reply_user_avatar: replyInfo.value.user_avatar,
-    };
-    emit('replyComment', params);
-  } else {
-    emit('replyComment', val);
-  }
+  emit('replyComment', val);
 };
 </script>
 
@@ -59,7 +42,7 @@ const replyComment = async (val) => {
         <div class="name">
           {{ item.user_name }}
           <span
-            v-if="item.user_id === userInfo.id"
+            v-if="articleInfo && item.user_id === articleInfo.user_id"
             class="author"
           >作者</span>
           <div
@@ -98,10 +81,12 @@ const replyComment = async (val) => {
         <SendComment
           v-if="item.is_reply"
           :is-reply="true"
+          :reply-info="replyInfo"
           @reply-comment="replyComment"
         />
         <CommentList
           :comment-data="item.children"
+          :article-info="articleInfo"
           @reply-comment="replyComment"
         ></CommentList>
       </div>

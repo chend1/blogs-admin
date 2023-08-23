@@ -34,3 +34,8 @@ export {
 
 // 文件上传
 export { uploadFile } from './upload/index';
+
+// 友情链接
+export {
+  linkList, editLink, addLink, deleteLink,
+} from './link/index';

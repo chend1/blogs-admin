@@ -97,7 +97,12 @@ const rules = {
         />
         <el-table-column
           prop="user_name"
-          label="用户名"
+          label="发起用户"
+          align="center"
+        />
+        <el-table-column
+          prop="reply_user_name"
+          label="接收用户"
           align="center"
         />
 

@@ -29,6 +29,7 @@ onMounted(async () => {
       id: route.query.id,
     });
     articleInfo.value = res;
+    console.log(res);
   }
 });
 
@@ -112,13 +113,16 @@ const replyComment = async (params) => {
         </ul>
       </div>
       <div class="comment-send">
-        <SendComment @issue-comment="issueComment" />
+        <SendComment
+          @issue-comment="issueComment"
+        />
       </div>
       <div class="comment">
         <div class="list">
           <CommentList
             v-if="commentData.length"
             :comment-data="commentData"
+            :article-info="articleInfo"
             @reply-comment="replyComment"
           />
           <div

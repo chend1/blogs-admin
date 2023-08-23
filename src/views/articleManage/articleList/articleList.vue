@@ -79,6 +79,7 @@ const handleDeleteArticle = (row) => {
           label="标题"
           min-width="80"
           align="center"
+          show-overflow-tooltip
         />
         <el-table-column
           prop="class_id"

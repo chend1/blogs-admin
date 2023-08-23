@@ -1,10 +1,19 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useMainStore } from '@/store';
+import { useRoute } from 'vue-router';
 
+const mainStore = useMainStore();
+const userInfo = computed(() => mainStore.userInfo);
+const route = useRoute();
 const props = defineProps({
   isReply: {
     type: Boolean,
     default: false,
+  },
+  replyInfo: {
+    type: Object,
+    default: () => ({}),
   },
 });
 
@@ -17,7 +26,18 @@ const memeClick = (item) => {
 const emit = defineEmits(['issueComment', 'replyComment']);
 const issueComment = () => {
   if (props.isReply) {
-    emit('replyComment', comment.value);
+    const params = {
+      content: comment.value,
+      user_id: userInfo.value.id,
+      article_id: parseInt(route.query.id),
+      user_name: userInfo.value.name,
+      user_avatar: userInfo.value.avatar,
+      parent_id: props.replyInfo.parent_id || props.replyInfo.id,
+      reply_user_id: props.replyInfo.user_id,
+      reply_user_name: props.replyInfo.user_name,
+      reply_user_avatar: props.replyInfo.user_avatar,
+    };
+    emit('replyComment', params);
   } else {
     emit('issueComment', comment.value);
   }

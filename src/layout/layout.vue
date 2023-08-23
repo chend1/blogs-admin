@@ -2,8 +2,8 @@
 import { Operation, ArrowDown, ArrowRight } from '@element-plus/icons-vue';
 import { useMainStore } from '@/store';
 import { ref, computed } from 'vue';
-
 import MenuItem from './components/MenuItem.vue';
+import logoImg from '../assest/images/logo.png';
 
 const baseStore = useMainStore();
 const isCollapse = ref(false);
@@ -30,7 +30,7 @@ const aboutClick = () => {
       <div class="title">
         <div class="logo">
           <img
-            src=""
+            :src="logoImg"
             alt="后台管理系统"
             title="后台管理系统"
           />
