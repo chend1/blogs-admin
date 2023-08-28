@@ -16,7 +16,6 @@ export default function useClassificationData() {
   const getClassificationList = async (params, callback) => {
     searchInfo = params;
     const res = await classificationList(params);
-    console.log(res);
     classificationData.value = res.list;
     classificationOptions.value = flatArray(res.list);
     callback && callback();

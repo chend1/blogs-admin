@@ -39,3 +39,8 @@ export { uploadFile } from './upload/index';
 export {
   linkList, editLink, addLink, deleteLink,
 } from './link/index';
+
+// 文件管理
+export {
+  resourceList, deleteResource,
+} from './file/index';

@@ -22,7 +22,6 @@ request.interceptors.request.use((config) => {
 });
 // 请求成功拦截
 const successCallback = (response) => {
-  // console.log(response);
   const {
     message, code, data, status,
   } = response.data;
@@ -42,6 +41,7 @@ const successCallback = (response) => {
 // 请求失败拦截
 const errorCallback = (error) => {
   ElMessage.error(error.message);
+  return Promise.reject(error);
 };
 request.interceptors.response.use(successCallback, errorCallback);
 export default request;

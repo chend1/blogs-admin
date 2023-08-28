@@ -1,10 +1,14 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useArticleData from './useArticleData';
 import useClassificationData from '../classManage/useClassificationData';
 
-const { getClassificationName, getClassificationList } = useClassificationData();
+const {
+  classificationOptions,
+  getClassificationName,
+  getClassificationList,
+} = useClassificationData();
 getClassificationList();
 const {
   articleData,
@@ -19,6 +23,7 @@ const searchInfo = reactive({
   size: 10,
   keyword: '',
 });
+const searchTime = ref('');
 getArticleList(searchInfo);
 // 添加文章
 const router = useRouter();
@@ -54,17 +59,88 @@ const handleLookArticle = (row) => {
 const handleDeleteArticle = (row) => {
   deleteArticleClick({ id: row.id });
 };
+
+// 搜索时间改变
+const timeChange = () => {
+  console.log(searchTime.value);
+  searchInfo.start_time = searchTime.value ? searchTime.value[0] : '';
+  searchInfo.end_time = searchTime.value ? searchTime.value[1] : '';
+  getArticleList(searchInfo);
+};
 </script>
 
 <template>
   <div class="article-manage">
-    <div class="add-article">
-      <el-button
-        type="primary"
-        @click="handleAddArticle"
-      >
-        添加文章
-      </el-button>
+    <div class="head">
+      <div class="title">
+        {{ $route.meta.title }}
+      </div>
+    </div>
+    <div class="search-wrap">
+      <div class="add-article">
+        <el-button
+          type="primary"
+          @click="handleAddArticle"
+        >
+          添加文章
+        </el-button>
+      </div>
+      <div class="search">
+        <el-input
+          v-model="searchInfo.keyword"
+          placeholder="请输入关键字"
+          style="width: 180px;margin-right: 10px;"
+          clearable
+        />
+        <div class="select">
+          <el-select
+            v-model="searchInfo.class_id"
+            placeholder="请选择分类"
+            clearable
+          >
+            <el-option
+              v-for="item in classificationOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </div>
+        <div class="select">
+          <el-select
+            v-model="searchInfo.type"
+            placeholder="文章状态"
+            style="width: 100px;"
+            clearable
+          >
+            <el-option
+              label="已发布"
+              :value="1"
+            />
+            <el-option
+              label="草稿"
+              :value="0"
+            />
+          </el-select>
+        </div>
+        <div class="select">
+          <el-date-picker
+            v-model="searchTime"
+            type="daterange"
+            range-separator="——"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            value-format="YYYY-MM-DD"
+            @change="timeChange"
+          />
+        </div>
+        <el-button
+          type="primary"
+          @click="getArticleList(searchInfo)"
+        >
+          查询
+        </el-button>
+      </div>
     </div>
     <div class="table">
       <el-table
@@ -177,18 +253,46 @@ const handleDeleteArticle = (row) => {
   height: 100%;
   background-color: #fff;
   box-sizing: border-box;
-  padding: 10px;
-  .add-article {
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .head {
+    box-sizing: border-box;
+    padding: 0 10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+    color: #333;
+  }
+  .search-wrap {
     margin: 10px 0;
     box-sizing: border-box;
     padding: 0 10px;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .add-article {
+      margin-right: 10px;
+    }
+    .search {
+      display: flex;
+      align-items: center;
+      .select {
+        margin-right: 10px;
+      }
+    }
   }
   .table {
     width: 100%;
     flex: 1;
     box-sizing: border-box;
     padding: 0 10px;
+    overflow: hidden;
   }
   .paging {
     width: 100%;

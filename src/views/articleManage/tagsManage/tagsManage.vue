@@ -72,13 +72,34 @@ const rules = {
 
 <template>
   <div class="tags-manage">
-    <div class="add-tags">
-      <el-button
-        type="primary"
-        @click="handleAddTags"
-      >
-        添加标签
-      </el-button>
+    <div class="head">
+      <div class="title">
+        {{ $route.meta.title }}
+      </div>
+    </div>
+    <div class="search-wrap">
+      <div class="add-tags">
+        <el-button
+          type="primary"
+          @click="handleAddTags"
+        >
+          添加标签
+        </el-button>
+      </div>
+      <div class="search">
+        <el-input
+          v-model="searchInfo.keyword"
+          placeholder="请输入关键字"
+          clearable
+        />
+        <el-button
+          type="primary"
+          style="margin-left: 15px;"
+          @click="getTagsList(searchInfo)"
+        >
+          查询
+        </el-button>
+      </div>
     </div>
     <div class="table">
       <el-table
@@ -214,12 +235,33 @@ const rules = {
   height: 100%;
   background-color: #fff;
   box-sizing: border-box;
-  padding: 10px;
-  .add-tags {
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .head {
+    box-sizing: border-box;
+    padding: 0 10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+    color: #333;
+  }
+  .search-wrap {
     margin: 10px 0;
     box-sizing: border-box;
     padding: 0 10px;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .search{
+      display: flex;
+      align-items: center;
+    }
   }
   .table {
     width: 100%;

@@ -75,6 +75,11 @@ const rules = {
 
 <template>
   <div class="comment-manage">
+    <div class="head">
+      <div class="title">
+        {{ $route.meta.title }}
+      </div>
+    </div>
     <div class="table">
       <el-table
         :data="commentData"
@@ -206,7 +211,22 @@ const rules = {
   height: 100%;
   background-color: #fff;
   box-sizing: border-box;
-  padding: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .head {
+    box-sizing: border-box;
+    padding: 0 10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+    color: #333;
+    margin-bottom: 10px;
+  }
   .add-comment {
     margin: 10px 0;
     box-sizing: border-box;
@@ -218,6 +238,7 @@ const rules = {
     flex: 1;
     box-sizing: border-box;
     padding: 0 10px;
+    overflow: hidden;
   }
   .paging {
     width: 100%;
