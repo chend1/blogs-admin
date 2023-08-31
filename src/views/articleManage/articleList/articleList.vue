@@ -89,7 +89,7 @@ const timeChange = () => {
         <el-input
           v-model="searchInfo.keyword"
           placeholder="请输入关键字"
-          style="width: 180px;margin-right: 10px;"
+          style="width: 180px; margin-right: 10px"
           clearable
         />
         <div class="select">
@@ -110,7 +110,7 @@ const timeChange = () => {
           <el-select
             v-model="searchInfo.type"
             placeholder="文章状态"
-            style="width: 100px;"
+            style="width: 100px"
             clearable
           >
             <el-option
@@ -126,11 +126,15 @@ const timeChange = () => {
         <div class="select">
           <el-date-picker
             v-model="searchTime"
-            type="daterange"
+            type="datetimerange"
             range-separator="——"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
-            value-format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            :default-time="[
+              new Date(2000, 1, 1, 0, 0, 0),
+              new Date(2000, 2, 1, 23, 59, 59)
+            ]"
             @change="timeChange"
           />
         </div>

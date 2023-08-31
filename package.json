@@ -13,9 +13,12 @@
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.4.0",
+    "echarts": "^5.4.3",
     "element-plus": "^2.3.6",
+    "fast-glob": "^3.3.1",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.34",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.2.47",
     "vue-cropper": "^1.0.9",
     "vue-router": "4"

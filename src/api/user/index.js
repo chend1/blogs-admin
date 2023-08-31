@@ -10,3 +10,6 @@ export const addUser = (data) => request.post('/user/add', data);
 
 // 删除账号
 export const deleteUser = (data) => request.post('/user/delete', data);
+
+// 重置密码
+export const resetUserPassword = (data) => request.post('/user/password/reset', data);

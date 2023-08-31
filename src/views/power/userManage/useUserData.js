@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {
-  userList, editUser, addUser, deleteUser,
+  userList, editUser, addUser, deleteUser, resetUserPassword,
 } from '@/api';
 
 export default function useUserData() {
@@ -43,6 +43,27 @@ export default function useUserData() {
       console.error(err);
     }
   };
+  // 重置密码
+  const resetPasswordClick = async (params) => {
+    ElMessageBox.confirm('确认重置该账号密码吗？', '警告', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+      .then(async () => {
+        try {
+          await resetUserPassword(params);
+          getUserList(searchInfo);
+          ElMessage({
+            type: 'success',
+            message: '重置成功',
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      })
+      .catch(() => {});
+  };
   // 删除账号
   const deleteUserClick = (params) => {
     ElMessageBox.confirm('确认删除该账号吗？', '警告', {
@@ -71,5 +92,6 @@ export default function useUserData() {
     addUserClick,
     editUserClick,
     deleteUserClick,
+    resetPasswordClick,
   };
 }

@@ -2,7 +2,7 @@
 export { login, getUserInfo } from './login/index';
 // 账号
 export {
-  userList, editUser, addUser, deleteUser,
+  userList, editUser, addUser, deleteUser, resetUserPassword,
 } from './user/index';
 // 角色
 export {
@@ -44,3 +44,8 @@ export {
 export {
   resourceList, deleteResource,
 } from './file/index';
+
+// 修改网站信息
+export {
+  webInfo, editWebInfo,
+} from './system/index';

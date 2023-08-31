@@ -34,20 +34,20 @@ export const useMainStore = defineStore('main', {
     },
     setLinkList(link) {
       const list = this.linkList.filter(
-        (item) => item.path !== link.path
-          && (!item.query.id
-          || link.query.id !== item.query.id),
+        (item) => item.path === link.path
+          || (item.query.id
+          && link.query.id === item.query.id),
       );
-      // if (list.length <= 0) {
-      //   this.linkList.push(link);
-      // }
-      list.push(link);
-      this.linkList = list;
+      if (list.length <= 0) {
+        this.linkList.push(link);
+      }
+      // list.push(link);
+      // this.linkList = list;
     },
-    // deleteLink(link) {
-    //   const idx = this.linkList.findIndex((item) => item.path === link.path);
-    //   this.linkList.splice(idx + 1, this.linkList.length);
-    // },
+    deleteLink(link) {
+      const idx = this.linkList.findIndex((item) => item.path === link.path);
+      this.linkList.splice(idx, 1);
+    },
     logOut() {
       removeStorage('token');
       this.token = '';

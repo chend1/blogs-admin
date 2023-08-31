@@ -15,6 +15,8 @@ const option = ref({});
 const isCropper = ref(false);
 const fileChange = (e) => {
   const file = e.target.files[0];
+  option.value.name = file.name;
+  console.log(file);
   option.value.img = URL.createObjectURL(file);
   option.value.outputType = file.type.split('/')[1];
   isCropper.value = true;
@@ -25,8 +27,10 @@ const cropperRef = ref();
 const emit = defineEmits(['saveImg']);
 const screenShotClick = () => {
   cropperRef.value.getCropBlob(async (data) => {
+    // console.log(data);
     imgSrc.value = URL.createObjectURL(data);
     const formData = new FormData();
+    formData.append('name', option.value.name);
     formData.append('file', data);
     const res = await uploadFile(formData);
     isCropper.value = false;

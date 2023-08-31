@@ -1,9 +1,10 @@
 <script setup>
-import { Operation, ArrowDown, ArrowRight } from '@element-plus/icons-vue';
+import { Operation, ArrowDown } from '@element-plus/icons-vue';
 import { useMainStore } from '@/store';
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import MenuItem from './components/MenuItem.vue';
-import logoImg from '../assest/images/logo.png';
+import logoImg from '../assets/images/logo.png';
 
 const baseStore = useMainStore();
 const isCollapse = ref(false);
@@ -18,6 +19,21 @@ const logOutClick = () => {
 // 关于我们点击
 const aboutClick = () => {
   console.log(123);
+};
+// 移除记录
+const removeTab = (tab) => {
+  console.log(tab);
+  const link = JSON.parse(tab);
+  baseStore.deleteLink(link);
+};
+const router = useRouter();
+const tabClick = (tab) => {
+  console.log(tab.props.name);
+  const { path, query } = JSON.parse(tab.props.name);
+  router.push({
+    path,
+    query,
+  });
 };
 </script>
 
@@ -66,7 +82,7 @@ const aboutClick = () => {
             <el-icon><Operation /></el-icon>
           </div>
           <div class="list">
-            <el-breadcrumb :separator-icon="ArrowRight">
+            <!-- <el-breadcrumb :separator-icon="ArrowRight">
               <el-breadcrumb-item
                 v-for="item in linkList"
                 :key="item.path"
@@ -75,7 +91,25 @@ const aboutClick = () => {
               >
                 {{ item.name }}
               </el-breadcrumb-item>
-            </el-breadcrumb>
+            </el-breadcrumb> -->
+            <el-tabs
+              type="card"
+              class="demo-tabs"
+              closable
+              size="small"
+              @tab-remove="removeTab"
+              @tab-click="tabClick"
+            >
+              <el-tab-pane
+                v-for="item in linkList"
+                :key="item.path"
+                :label="item.name"
+                size="small"
+                :name="JSON.stringify(item)"
+                style="background-color: red;"
+              >
+              </el-tab-pane>
+            </el-tabs>
           </div>
         </div>
         <div class="user-info">
@@ -182,7 +216,10 @@ const aboutClick = () => {
       align-items: center;
       justify-content: space-between;
       background-color: #fff;
+      overflow: hidden;
       .menu {
+        flex: 1;
+        overflow: hidden;
         font-size: 20px;
         color: #333;
         cursor: pointer;
@@ -195,9 +232,23 @@ const aboutClick = () => {
           }
         }
         .list {
+          flex: 1;
+          overflow: hidden;
           margin-left: 15px;
-          .active{
-            :deep(.is-link){
+          :deep(.el-tabs__header) {
+            margin-bottom: 0;
+          }
+          :deep(.el-tabs){
+            --el-tabs-header-height: 30px;
+          }
+          :deep(.el-tabs__nav-prev){
+            line-height: 34px;
+          }
+          :deep(.el-tabs__nav-next){
+            line-height: 34px;
+          }
+          .active {
+            :deep(.is-link) {
               color: #4694fa;
             }
           }
@@ -229,7 +280,7 @@ const aboutClick = () => {
     .content {
       flex: 1;
       width: 100%;
-      background-color: #eee;
+      background-color: #f8f8f8;
       box-sizing: border-box;
       padding: 8px;
       overflow: hidden;

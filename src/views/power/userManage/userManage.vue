@@ -12,6 +12,7 @@ const {
   addUserClick,
   editUserClick,
   deleteUserClick,
+  resetPasswordClick,
 } = useUserData();
 // 搜索信息
 const searchInfo = reactive({
@@ -43,6 +44,11 @@ const handleEditUser = (row) => {
 // 删除用户
 const handleDeleteUser = (row) => {
   deleteUserClick({ id: row.id });
+};
+
+// 重置密码
+const handleResetPassword = (row) => {
+  resetPasswordClick({ id: row.id });
 };
 // 弹窗确认事件
 const formRef = ref();
@@ -180,6 +186,14 @@ const rules = {
               @click="handleEditUser(scope.row)"
             >
               编辑
+            </el-button>
+            <el-button
+              type="primary"
+              size="small"
+              plain
+              @click="handleResetPassword(scope.row)"
+            >
+              重置密码
             </el-button>
             <el-button
               type="danger"
