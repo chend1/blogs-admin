@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import {
+  ref, onMounted, computed, watch,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import {
   Pointer, ChatRound, Position, Star,
@@ -21,17 +23,24 @@ const {
 
 const articleInfo = ref({});
 const route = useRoute();
-
-onMounted(async () => {
+watch((() => route.query), () => {
   if (route.query.id) {
-    const res = await getArticleInfo({ id: route.query.id });
-    getCommentList({
-      id: route.query.id,
-    });
-    articleInfo.value = res;
-    console.log(res);
+    getArticleDetail();
   }
 });
+onMounted(async () => {
+  if (route.query.id) {
+    getArticleDetail();
+  }
+});
+// 获取文章详情
+const getArticleDetail = async () => {
+  const res = await getArticleInfo({ id: route.query.id });
+  articleInfo.value = res;
+  getCommentList({
+    id: route.query.id,
+  });
+};
 
 const mainStore = useMainStore();
 const userInfo = computed(() => mainStore.userInfo);

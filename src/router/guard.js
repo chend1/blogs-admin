@@ -13,7 +13,7 @@ router.beforeEach(async (to, from, next) => {
       // console.log(to);
       const linkInfo = {
         path: to.path,
-        name: to.meta.title,
+        name: to.query.title || to.meta.title,
         query: to.query,
       };
       baseStore.setLinkList(linkInfo);

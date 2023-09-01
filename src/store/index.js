@@ -33,20 +33,31 @@ export const useMainStore = defineStore('main', {
       router.addRoute({ path: '/:pathMatch(.*)', redirect: '/404' });
     },
     setLinkList(link) {
+      let url = `${link.path}?`;
+      Object.keys(link.query).forEach((key) => {
+        url += `${key}=${link.query[key]}&`;
+      });
+      url = url.slice(0, -1);
+      const item = {
+        path: url,
+        name: link.name,
+      };
       const list = this.linkList.filter(
-        (item) => item.path === link.path
-          || (item.query.id
-          && link.query.id === item.query.id),
+        (i) => i.path === url,
       );
       if (list.length <= 0) {
-        this.linkList.push(link);
+        this.linkList.push(item);
       }
       // list.push(link);
       // this.linkList = list;
     },
-    deleteLink(link) {
-      const idx = this.linkList.findIndex((item) => item.path === link.path);
+    deleteLink(path, type) {
+      const idx = this.linkList.findIndex((item) => item.path === path);
       this.linkList.splice(idx, 1);
+      if (type) {
+        const url = this.linkList[this.linkList.length - 1].path;
+        router.push(url);
+      }
     },
     logOut() {
       removeStorage('token');

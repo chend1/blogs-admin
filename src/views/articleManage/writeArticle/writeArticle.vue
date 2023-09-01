@@ -1,5 +1,7 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import {
+  computed, onMounted, ref, watch,
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Close } from '@element-plus/icons-vue';
 import RithText from '@/components/RithText.vue';
@@ -18,20 +20,29 @@ getClassificationList();
 // 文章信息
 const articleInfo = ref({});
 const isAdd = ref(false);
+watch((() => route.query), () => {
+  if (route.query.id) {
+    getArticleDetail();
+  }
+});
 onMounted(async () => {
-  console.log(route.query);
+  // console.log(route.query);
   isAdd.value = route.query.isAdd === 'true';
   articleInfo.value.author = userInfo.value.name;
   if (route.query.id) {
-    const res = await getArticleInfo({ id: route.query.id });
-    articleInfo.value = {
-      ...res,
-      keyword: res.keyword ? res.keyword.split(',') : [],
-      tags: res.tags ? res.tags.split(',') : [],
-    };
-    console.log(res);
+    getArticleDetail();
   }
 });
+// 获取文章详情
+const getArticleDetail = async () => {
+  const res = await getArticleInfo({ id: route.query.id });
+  articleInfo.value = {
+    ...res,
+    keyword: res.keyword ? res.keyword.split(',') : [],
+    tags: res.tags ? res.tags.split(',') : [],
+  };
+};
+
 // 返回
 const closeClick = () => {
   router.back();

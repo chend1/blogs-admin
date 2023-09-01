@@ -43,6 +43,7 @@ const handleEditArticle = (row) => {
     query: {
       isAdd: false,
       id: row.id,
+      title: row.title,
     },
   });
 };
@@ -51,6 +52,7 @@ const handleLookArticle = (row) => {
     path: '/articleInfo',
     query: {
       id: row.id,
+      title: row.title,
     },
   });
 };

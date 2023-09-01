@@ -2,7 +2,8 @@
 import { Operation, ArrowDown } from '@element-plus/icons-vue';
 import { useMainStore } from '@/store';
 import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { param2Obj } from '@/utils';
 import MenuItem from './components/MenuItem.vue';
 import logoImg from '../assets/images/logo.png';
 
@@ -21,20 +22,35 @@ const aboutClick = () => {
   console.log(123);
 };
 // 移除记录
-const removeTab = (tab) => {
-  console.log(tab);
-  const link = JSON.parse(tab);
-  baseStore.deleteLink(link);
+const removeTab = (path) => {
+  baseStore.deleteLink(path, path === routeKey.value);
 };
 const router = useRouter();
 const tabClick = (tab) => {
-  console.log(tab.props.name);
-  const { path, query } = JSON.parse(tab.props.name);
+  // console.log(tab.props.name);
+  const query = param2Obj(tab.props.name);
+  // console.log(query);
   router.push({
-    path,
+    path: tab.props.name,
     query,
   });
 };
+const route = useRoute();
+const routeKey = ref('');
+let url = `${route.path}?`;
+Object.keys(route.query).forEach((key) => {
+  url += `${key}=${route.query[key]}&`;
+});
+routeKey.value = url.slice(0, -1);
+// 页面级路由
+router.beforeEach((to, from, next) => {
+  let path = `${to.path}?`;
+  Object.keys(to.query).forEach((key) => {
+    path += `${key}=${to.query[key]}&`;
+  });
+  routeKey.value = path.slice(0, -1);
+  next();
+});
 </script>
 
 <template>
@@ -93,6 +109,7 @@ const tabClick = (tab) => {
               </el-breadcrumb-item>
             </el-breadcrumb> -->
             <el-tabs
+              v-model="routeKey"
               type="card"
               class="demo-tabs"
               closable
@@ -105,7 +122,7 @@ const tabClick = (tab) => {
                 :key="item.path"
                 :label="item.name"
                 size="small"
-                :name="JSON.stringify(item)"
+                :name="item.path"
                 style="background-color: red"
               >
               </el-tab-pane>
