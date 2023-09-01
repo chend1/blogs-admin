@@ -40,7 +40,7 @@ const tabClick = (tab) => {
 <template>
   <div class="layout">
     <div
-      class="aside"
+      class="aside dark"
       :class="{ collapse: isCollapse }"
     >
       <div class="title">
@@ -106,7 +106,7 @@ const tabClick = (tab) => {
                 :label="item.name"
                 size="small"
                 :name="JSON.stringify(item)"
-                style="background-color: red;"
+                style="background-color: red"
               >
               </el-tab-pane>
             </el-tabs>
@@ -157,8 +157,8 @@ const tabClick = (tab) => {
     height: 100%;
     overflow-y: auto;
     box-sizing: border-box;
-    background-color: #192430;
-    color: #fff;
+    background-color: #f7f9ff;
+    color: #333;
     .title {
       width: 100%;
       height: 55px;
@@ -182,12 +182,36 @@ const tabClick = (tab) => {
     .menu-wrap {
       .menu-list {
         border-right: none;
+        --el-menu-bg-color: #f7f9ff;
+        // --el-menu-text-color: #ffffff;
+        --el-menu-hover-bg-color: #dae4ff;
+        --el-menu-text-color: #333;
+      }
+      :deep(.el-menu-item.is-active) {
+        // background-color: #434a50;
+        // color: #2e97f8;
+        background-color: #7b9eff;
+        color: #fff;
+      }
+    }
+  }
+  .dark {
+    background-color: #192430;
+    color: #fff;
+    .menu-wrap {
+      .menu-list {
+        border-right: none;
         --el-menu-bg-color: #192430;
         --el-menu-text-color: #ffffff;
         --el-menu-hover-bg-color: #306bff81;
       }
+
       :deep(.el-menu-item.is-active) {
         background-color: #306bff;
+        color: #fff;
+      }
+      :deep(.el-popper.is-light) {
+        background-color: #192430;
         color: #fff;
       }
     }
@@ -238,13 +262,13 @@ const tabClick = (tab) => {
           :deep(.el-tabs__header) {
             margin-bottom: 0;
           }
-          :deep(.el-tabs){
+          :deep(.el-tabs) {
             --el-tabs-header-height: 30px;
           }
-          :deep(.el-tabs__nav-prev){
+          :deep(.el-tabs__nav-prev) {
             line-height: 34px;
           }
-          :deep(.el-tabs__nav-next){
+          :deep(.el-tabs__nav-next) {
             line-height: 34px;
           }
           .active {
