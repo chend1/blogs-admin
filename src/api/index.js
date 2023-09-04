@@ -1,5 +1,7 @@
 // 登录
-export { login, getUserInfo } from './login/index';
+export {
+  login, getUserInfo, editUserInfo, editUserPassword,
+} from './login/index';
 // 账号
 export {
   userList, editUser, addUser, deleteUser, resetUserPassword,

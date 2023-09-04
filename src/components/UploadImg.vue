@@ -10,6 +10,13 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  styleObj: {
+    type: Object,
+    default: () => ({
+      width: '150px',
+      height: '150px',
+    }),
+  },
 });
 const option = ref({});
 const isCropper = ref(false);
@@ -47,17 +54,24 @@ const handleClose = () => {
 </script>
 
 <template>
-  <div class="upload-img">
+  <div
+    class="upload-img"
+    :style="{height: styleObj.height}"
+  >
     <div
       v-if="imgSrc"
       class="img"
+      :style="{width: styleObj.width, height: styleObj.height}"
     >
       <img
         :src="imgSrc"
         alt=""
       />
     </div>
-    <div class="upload">
+    <div
+      class="upload"
+      :style="{width: styleObj.width, height: styleObj.height}"
+    >
       <div class="icon">
         <Plus />
       </div>

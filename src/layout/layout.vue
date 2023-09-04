@@ -4,6 +4,7 @@ import { useMainStore } from '@/store';
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { param2Obj } from '@/utils';
+import PersonCenter from '@/components/PersonCenter.vue';
 import MenuItem from './components/MenuItem.vue';
 import logoImg from '../assets/images/logo.png';
 
@@ -17,10 +18,10 @@ const linkList = computed(() => baseStore.linkList);
 const logOutClick = () => {
   baseStore.logOut();
 };
-// 关于我们点击
-const aboutClick = () => {
-  console.log(123);
-};
+// // 关于我们点击
+// const aboutClick = () => {
+//   console.log(123);
+// };
 // 移除记录
 const removeTab = (path) => {
   baseStore.deleteLink(path, path === routeKey.value);
@@ -51,6 +52,17 @@ router.beforeEach((to, from, next) => {
   routeKey.value = path.slice(0, -1);
   next();
 });
+
+// 个人中心点击
+const isShow = ref(false);
+const personCenterClick = () => {
+  isShow.value = !isShow.value;
+  console.log('个人中心');
+};
+// 修改个人信息
+const updateInfo = (info) => {
+  console.log('修改个人信息', info);
+};
 </script>
 
 <template>
@@ -98,16 +110,6 @@ router.beforeEach((to, from, next) => {
             <el-icon><Operation /></el-icon>
           </div>
           <div class="list">
-            <!-- <el-breadcrumb :separator-icon="ArrowRight">
-              <el-breadcrumb-item
-                v-for="item in linkList"
-                :key="item.path"
-                :to="{ path: item.path, query: item.query }"
-                :class="{active: $route.path === item.path}"
-              >
-                {{ item.name }}
-              </el-breadcrumb-item>
-            </el-breadcrumb> -->
             <el-tabs
               v-model="routeKey"
               type="card"
@@ -145,8 +147,11 @@ router.beforeEach((to, from, next) => {
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="aboutClick">
+                <!-- <el-dropdown-item @click="aboutClick">
                   关于我们
+                </el-dropdown-item> -->
+                <el-dropdown-item @click="personCenterClick">
+                  个人中心
                 </el-dropdown-item>
                 <el-dropdown-item @click="logOutClick">
                   退出登录
@@ -161,6 +166,11 @@ router.beforeEach((to, from, next) => {
       </div>
     </div>
   </div>
+  <PersonCenter
+    v-if="isShow"
+    @confirm-click="updateInfo"
+    @close="isShow = false"
+  ></PersonCenter>
 </template>
 
 <style scoped lang="less">

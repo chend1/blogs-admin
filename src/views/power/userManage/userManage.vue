@@ -311,6 +311,9 @@ const rules = {
   background-color: #fff;
   box-sizing: border-box;
   padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   .head {
     box-sizing: border-box;
     padding: 0 10px;
@@ -340,6 +343,7 @@ const rules = {
     flex: 1;
     box-sizing: border-box;
     padding: 0 10px;
+    overflow: hidden;
   }
   .paging {
     width: 100%;
