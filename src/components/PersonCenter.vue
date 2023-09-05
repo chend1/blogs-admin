@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { editUserInfo, editUserPassword } from '@/api';
 import { useMainStore } from '@/store';
 
-const emit = defineEmits(['close', 'confirmClick']);
+const emit = defineEmits(['close']);
 const activeName = ref('first');
 const baseStore = useMainStore();
 const userInfo = ref({});
@@ -27,14 +27,14 @@ const confirmClick = () => {
     userFormRef.value.validate(async (valid) => {
       if (valid) {
         await editUserInfo(userInfo.value);
-        emit('confirmClick', userInfo.value);
+        emit('close');
       }
     });
   } else {
     formRef.value.validate(async (valid) => {
       if (valid) {
         await editUserPassword(userInfo.value);
-        emit('confirmClick', userInfo.value);
+        emit('close');
       }
     });
   }

@@ -59,10 +59,6 @@ const personCenterClick = () => {
   isShow.value = !isShow.value;
   console.log('个人中心');
 };
-// 修改个人信息
-const updateInfo = (info) => {
-  console.log('修改个人信息', info);
-};
 </script>
 
 <template>
@@ -168,7 +164,6 @@ const updateInfo = (info) => {
   </div>
   <PersonCenter
     v-if="isShow"
-    @confirm-click="updateInfo"
     @close="isShow = false"
   ></PersonCenter>
 </template>
@@ -333,7 +328,7 @@ const updateInfo = (info) => {
       width: 100%;
       background-color: #f8f8f8;
       box-sizing: border-box;
-      padding: 8px;
+      padding: 10px;
       overflow: hidden;
     }
   }

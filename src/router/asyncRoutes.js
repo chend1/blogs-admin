@@ -101,4 +101,30 @@ export const asyncRoutes = [
       },
     ],
   },
+  {
+    path: '/visitorsManage',
+    redirect: '/visitorsManage/visitorsList',
+    meta: { title: '游客管理', isLayout: true },
+    name: 'visitorsManage',
+    children: [
+      {
+        path: '/visitorsManage/visitorsList',
+        component: () => import('@/views/visitorsManage/visitorsList/visitorsList.vue'),
+        meta: { title: '游客列表', isLayout: true },
+        name: 'visitorsList',
+      },
+      {
+        path: '/visitorsManage/visitorsConsult',
+        component: () => import('@/views/visitorsManage/visitorsConsult/visitorsConsult.vue'),
+        meta: { title: '咨询列表', isLayout: true },
+        name: 'visitorsConsult',
+      },
+      {
+        path: '/visitorsManage/visitorsInfo',
+        component: () => import('@/views/visitorsManage/visitorsInfo/visitorsInfo.vue'),
+        meta: { title: '游客详情', isLayout: true },
+        name: 'visitorsInfo',
+      },
+    ],
+  },
 ];
