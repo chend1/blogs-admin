@@ -94,3 +94,9 @@ li {
 .editor-content-view input[type="checkbox"] {
   margin-right: 5px;
 }
+.el-drawer__header {
+  margin-bottom: 0 !important;
+}
+.el-drawer__body {
+  --el-drawer-padding-primary: 20px 0 10px;
+}

@@ -1,12 +1,18 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
+import { useMainStore } from '@/store';
 import useConsultData from './useConsultData';
 
+const mainStore = useMainStore();
+const userInfo = computed(() => mainStore.userInfo);
 const {
+  total,
   consultData,
   getConsultList,
   // editConsultClick,
   deleteConsultClick,
+  getReplyList,
+  addReplyClick,
 } = useConsultData();
 // 搜索信息
 const searchInfo = reactive({
@@ -15,22 +21,46 @@ const searchInfo = reactive({
   keyword: '',
 });
 getConsultList(searchInfo);
-// 游客留言信息
-const consultInfo = ref({
-  status: 1,
-});
-// 弹窗信息
-const dialogVisible = ref(false);
-
-// 修改游客留言
-const handleEditConsult = (row) => {
-  dialogVisible.value = true;
-  consultInfo.value = { ...row };
-};
 
 // 删除游客留言
 const handleDeleteConsult = (row) => {
   deleteConsultClick({ id: row.id });
+};
+
+// 弹窗信息
+const drawerVisible = ref(false);
+// 游客留言信息
+const consultInfo = ref({
+  status: 1,
+});
+// 留言列表
+const consultList = ref([]);
+// 修改游客留言
+const handleEditConsult = async (row) => {
+  drawerVisible.value = true;
+  consultInfo.value = { ...row };
+  const res = await getReplyList({ id: row.id });
+  consultList.value = res;
+};
+// 关闭弹窗
+const handleClose = () => {
+  drawerVisible.value = false;
+  console.log(123);
+};
+// 回复消息
+const replyMessage = ref('');
+const replyClick = async () => {
+  addReplyClick({
+    consult_id: consultInfo.value.id,
+    consult_content: replyMessage.value,
+    reply_name: userInfo.value.name,
+    reply_avatar: userInfo.value.avatar,
+    reply_user_id: userInfo.value.id,
+  }, async () => {
+    const res = await getReplyList({ id: consultInfo.value.id });
+    consultList.value = res;
+    replyMessage.value = '';
+  });
 };
 </script>
 
@@ -107,7 +137,7 @@ const handleDeleteConsult = (row) => {
               size="small"
               @click="handleEditConsult(scope.row)"
             >
-              编辑
+              查看
             </el-button>
             <el-button
               type="danger"
@@ -136,6 +166,69 @@ const handleDeleteConsult = (row) => {
       />
     </div>
   </div>
+  <el-drawer
+    v-model="drawerVisible"
+    title="留言列表"
+    direction="rtl"
+    :before-close="handleClose"
+  >
+    <div class="replay-list">
+      <ul>
+        <li
+          v-for="item in consultList"
+          :key="item.id"
+          :class="{ own: item.reply_user_id === userInfo.id }"
+        >
+          <div class="avatar">
+            <img
+              v-if="item.reply_avatar || item.avatar"
+              :src="item.reply_avatar || item.avatar"
+              alt=""
+            />
+            <span v-else>{{
+              (item.reply_name || item.name).substr(0, 1)
+            }}</span>
+          </div>
+          <div class="content">
+            <div class="name">
+              {{ item.reply_name || item.name }}
+            </div>
+            <div class="message">
+              {{
+                item.consult_content
+              }}
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="operation">
+        <div class="send-message">
+          <el-input
+            v-model="replyMessage"
+            type="textarea"
+            :rows="3"
+            resize="none"
+            placeholder="请输入内容"
+          />
+        </div>
+        <div class="btn">
+          <el-button
+            type="primary"
+            plain
+            @click="drawerVisible = false"
+          >
+            取消
+          </el-button>
+          <el-button
+            type="primary"
+            @click="replyClick"
+          >
+            回复
+          </el-button>
+        </div>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <style scoped lang="less">
@@ -167,7 +260,7 @@ const handleDeleteConsult = (row) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .search{
+    .search {
       display: flex;
       align-items: center;
     }
@@ -184,6 +277,90 @@ const handleDeleteConsult = (row) => {
     display: flex;
     justify-content: center;
     margin: 20px 0;
+  }
+}
+.replay-list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 5px 0;
+  ul {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0 20px;
+    overflow-y: auto;
+    li {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 3px;
+        overflow: hidden;
+        background-color: #409eff;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        img {
+          width: 100%;
+        }
+      }
+      .content {
+        flex: 1;
+        padding: 0 10px;
+        .name {
+          font-size: 14px;
+          color: #666;
+          margin-top: -5px;
+          width: 100%;
+        }
+        .message {
+          margin-top: 3px;
+          display: inline-block;
+          background-color: #f7f7f7;
+          line-height: 28px;
+          padding: 4px 10px;
+          color: #333;
+          font-size: 14px;
+          user-select: text;
+          border-radius: 3px;
+        }
+      }
+    }
+    .own {
+      flex-direction: row-reverse;
+      .content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        .name {
+          text-align: right;
+        }
+        .message {
+          background-color: #409eff;
+          color: #fff;
+        }
+      }
+    }
+  }
+  .operation {
+    width: 100%;
+    height: 120px;
+    position: relative;
+    border-top: 1px solid #eee;
+    box-sizing: border-box;
+    padding: 10px 20px 0;
+    .send-message {
+      width: 100%;
+    }
+    .btn {
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }
 </style>

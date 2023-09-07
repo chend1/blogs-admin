@@ -76,7 +76,10 @@ export {
   editVisitors,
   deleteVisitors,
   editVisitorsPassword,
+  visitorsInfo,
   editConsult,
   deleteConsult,
   consultList,
+  replyList,
+  addReply,
 } from './visitors/index';
