@@ -83,3 +83,14 @@ export {
   replyList,
   addReply,
 } from './visitors/index';
+
+// 网站统计
+export {
+  articleData,
+  commentData,
+  registerData,
+  articleMonthData,
+  commentMonthData,
+  starMonthData,
+  viewMonthData,
+} from './statistics/index';

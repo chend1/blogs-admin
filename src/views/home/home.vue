@@ -1,22 +1,44 @@
 <script setup>
 import * as echarts from 'echarts';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import DynamicNum from '@/components/DynamicNum.vue';
-import { lineOption, pieOption, technologyList } from './data';
+import useData from './useData';
 
-const initChart = () => {
-  const myChart = echarts.init(document.querySelector('.line'));
-  myChart.setOption(lineOption);
-  const myPie = echarts.init(document.querySelector('.pie'));
-  myPie.setOption(pieOption);
-  window.onresize = () => {
-    myChart.resize();
-    myPie.resize();
-  };
-};
+const {
+  statisticData,
+  pieData,
+  lineData,
+  technologyList,
+  getArticleData,
+  getRegisterData,
+  getArticleDataByMonth,
+} = useData();
+getArticleData();
+getRegisterData();
+getArticleDataByMonth();
+
+// 初始化图表
 onMounted(() => {
-  initChart();
+  const myPie = echarts.init(document.querySelector('.pie'));
+  const myLine = echarts.init(document.querySelector('.line'));
+  watch(() => pieData.value, () => {
+    myPie.setOption(pieData.value);
+    window.onresize = () => {
+      myLine && myLine.resize();
+      myPie && myPie.resize();
+    };
+  }, { immediate: true });
+
+  watch(() => lineData.value, () => {
+    console.log(666, lineData.value);
+    myLine.setOption(lineData.value);
+    window.onresize = () => {
+      myLine && myLine.resize();
+      myPie && myPie.resize();
+    };
+  }, { immediate: true });
 });
+
 </script>
 
 <template>
@@ -25,7 +47,7 @@ onMounted(() => {
       <li>
         <div class="data">
           <div class="num">
-            <DynamicNum :num="5946" />
+            <DynamicNum :num="statisticData.views" />
           </div>
           <div class="title">
             文章阅读量
@@ -38,7 +60,7 @@ onMounted(() => {
       <li>
         <div class="data">
           <div class="num">
-            <DynamicNum :num="5946156" />
+            <DynamicNum :num="statisticData.comments" />
           </div>
           <div class="title">
             文章评论条数
@@ -51,7 +73,7 @@ onMounted(() => {
       <li>
         <div class="data">
           <div class="num">
-            <DynamicNum :num="9999" />
+            <DynamicNum :num="statisticData.total" />
           </div>
           <div class="title">
             文章发布量
@@ -64,7 +86,7 @@ onMounted(() => {
       <li>
         <div class="data">
           <div class="num">
-            <DynamicNum :num="5946156" />
+            <DynamicNum :num="statisticData.registerData" />
           </div>
           <div class="title">
             用户注册量

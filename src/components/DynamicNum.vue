@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   num: {
@@ -34,7 +34,9 @@ const dynamicNum = (val) => {
     return num;
   }, 60);
 };
-dynamicNum(props.num);
+watch(() => props.num, () => {
+  dynamicNum(props.num);
+}, { immediate: true });
 </script>
 
 <template>
