@@ -6,7 +6,7 @@ import { useMainStore } from '@/store';
 
 const baseUrl = import.meta.env.MODE === 'development'
   ? '/api'
-  : import.meta.env.VITE_BASE_URL;
+  : import.meta.env.VITE_APP_BASE_API;
 
 const request = axios.create({
   baseURL: baseUrl,

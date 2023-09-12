@@ -4,8 +4,8 @@ import { createPinia } from 'pinia';
 import 'normalize.css/normalize.css'; // CSS重置
 import './styles/reset.less';
 // element导入
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
+// import ElementPlus from 'element-plus';
+// import 'element-plus/dist/index.css';
 // import 'element-plus/theme-chalk/dark/css-vars.css';
 // icon图标
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
@@ -44,5 +44,5 @@ app.component('Icon', Icon);
 // 自定义svg
 app.component('SvgIcon', svgIcon);
 
-app.use(pinia).use(ElementPlus).use(router)
+app.use(pinia).use(router)
   .mount('#app');
